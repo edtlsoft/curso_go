@@ -16,13 +16,30 @@ func (tl *taskList) removeTaskOfList(index int) {
 	tl.tasks = append(tl.tasks[:index], tl.tasks[index + 1:]...)
 }
 
+func (tl *taskList) printList() {
+	for _, task := range tl.tasks {
+		fmt.Println("Nombre:", task.nombre)
+		fmt.Println("Descripcion:", task.descripcion)
+	}
+}
+
+func (tl *taskList) printListCompleted() {
+	for _, task := range tl.tasks {
+		if task.completado {
+			fmt.Println("Nombre:", task.nombre)
+			fmt.Println("Descripcion:", task.descripcion)
+		}
+	}
+}
+
+
 type task struct {
 	nombre string
 	descripcion string
 	completado bool
 }
 
-func (t *task) marcarCompleta() {
+func (t *task) marcarCompletada() {
 	t.completado = true
 }
 
@@ -58,18 +75,11 @@ func main() {
 		},
 	}
 
-	//fmt.Println(lista.tasks[0])
 	lista.addTaskInList(t3)
-	//fmt.Println(lista.tasks[2])
-	//fmt.Println(len(lista.tasks))
+	lista.printList();
 
-	//for i:=0; i < len(lista.tasks); i++ {
-	//	fmt.Println("Indice: ", i, " nombre: ", lista.tasks[i].nombre)
-	//}
-
-	for indice, tarea := range lista.tasks {
-		fmt.Println("Indice: ", indice, " nombre: ", tarea.nombre)
-	}
-
+	lista.tasks[0].marcarCompletada()
+	fmt.Println("I M P R I M I R  L I S T A  D E  T A R E A S  C O M P L E T A D A S")
+	lista.printListCompleted();
 	
 }
