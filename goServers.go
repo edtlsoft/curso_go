@@ -28,11 +28,13 @@ func main(){
 			go checkServer(server, chanel)
 		}
 
+		for i:=0; i < len(servers); i++ {
+			fmt.Println(<- chanel) 
+		}
+
 		time.Sleep(1 * time.Second)
-		fmt.Println(<- chanel)
 
 		i++
-		fmt.Println(i)
 	}
 
 	elapsedTime := time.Since(start)
