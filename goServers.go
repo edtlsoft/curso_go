@@ -17,15 +17,23 @@ func main(){
 		"http://instagram.com",
 	}
 
-	for _, server := range servers {
-		go checkServer(server, chanel)
-		//fmt.Println(<- chanel)
-	}
+	i := 0
 
-	for i:=0; i < len(servers); i++ {
-		fmt.Println(<- chanel) 
+	for {
+		if i > 10 {
+			break
+		}
+
+		for _, server := range servers {
+			go checkServer(server, chanel)
+		}
+
+		time.Sleep(1 * time.Second)
+		fmt.Println(<- chanel)
+
+		i++
+		fmt.Println(i)
 	}
-	
 
 	elapsedTime := time.Since(start)
 	fmt.Printf("Time execution %s\n", elapsedTime)
