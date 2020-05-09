@@ -33,6 +33,10 @@ func (s *Server) listen() error{
 	return error
 }
 
-func (s *Server) addMiddleware(f http.HandlerFunc, ...Middleware){
-	
+func (s *Server) addMiddleware(f http.HandlerFunc, middlewares ...Middleware) http.HandlerFunc{
+	for _, middleware := range middlewares {
+		f = middleware(f)
+	}
+
+	return f
 }
