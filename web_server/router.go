@@ -7,29 +7,35 @@ import (
 
 
 type Router struct{
-	routes map[string]http.HandlerFunc
+	routes map[string]map[string]http.HandlerFunc
 }
 
 
 func newRouter() *Router{
 	return &Router{
-		routes: make(map[string]http.HandlerFunc),
+		routes: make(map[string]map[string]http.HandlerFunc),
 	}
 }
 
 
-func (r *Router) findHandler(path string) (http.HandlerFunc, bool){
-	handler, exist := r.routes[path]
+func (r *Router) findHandler(path string, method string) (http.HandlerFunc, bool, bool){
+	_, existp := r.routes[path]
+	handler, existm := r.routes[path][method]
 
-	return handler, exist
+	return handler, existm, existp
 }
 
 
 func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request){
-	handler, exist := r.findHandler(request.URL.Path)
+	handler, existm, existp := r.findHandler(request.URL.Path, request.Method)
 
-	if !exist {
+	if !existp {
 		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	if !existm {
+		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
 
