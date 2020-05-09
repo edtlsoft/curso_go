@@ -32,3 +32,7 @@ func (s *Server) listen() error{
 
 	return error
 }
+
+func (s *Server) addMiddleware(f http.HandlerFunc, ...Middleware){
+	
+}
