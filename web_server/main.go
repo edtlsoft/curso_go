@@ -6,6 +6,7 @@ func main(){
 
 	server.handle("GET", "/", handleRoot)
 	server.handle("POST", "/api", server.addMiddleware(handleHome, CheckAuth(), Logging()))
+	server.handle("POST", "/create", postRequest)
 	
 	server.listen()
 }
