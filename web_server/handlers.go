@@ -28,3 +28,27 @@ func postRequest(w http.ResponseWriter, req *http.Request){
 
 	fmt.Fprintf(w, "Payload: %v\n", metadata)
 }
+
+
+func userRequest(w http.ResponseWriter, req *http.Request){
+	decoder := json.NewDecoder(req.Body)
+
+	var user User
+
+	error := decoder.Decode(&user)
+
+	if error != nil {
+		fmt.Fprintf(w, "Error: %v", error)
+		return
+	}
+
+	response, error := user.toJson()
+
+	if error != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("content-type", "application/json")
+	w.Write(response)
+}
